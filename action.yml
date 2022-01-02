@@ -1,0 +1,42 @@
+name: "setup-depot-tools"
+description: "Install Google's Depot Tools into the PATH."
+author: "Newk"
+outputs:
+    DEPOT_TOOLS_PATH:
+        description: "The directory in which Depot Tools are installed."
+runs:
+    using: "composite"
+    steps:
+        - shell: pwsh
+          run: |
+            $RepositoryUrl = "https://chromium.googlesource.com/chromium/tools/depot_tools.git"
+            $WinBundleUrl = "https://storage.googleapis.com/chrome-infra/depot_tools.zip"
+            $InstallLocation = "$Env:GITHUB_WORKSPACE/../depot_tools"
+
+            New-Item $InstallLocation -ItemType Directory -ea 0
+            Set-Location $InstallLocation
+
+            $InstallLocation = Resolve-Path -Path $InstallLocation
+
+            If ( $IsWindows ) {
+              Invoke-WebRequest -Uri $WinBundleUrl -OutFile depot_tools.zip
+              Expand-Archive -Path depot_tools.zip -DestinationPath .
+            } Else {
+              git clone $RepositoryUrl .
+            }
+
+            "DEPOT_TOOLS=$InstallLocation" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
+        
+        - shell: bash
+          run: |
+            echo "$DEPOT_TOOLS" >> $GITHUB_PATH
+            echo "$DEPOT_TOOLS/python2-bin" >> $GITHUB_PATH
+            echo "$DEPOT_TOOLS/python-bin" >> $GITHUB_PATH
+        
+        - shell: cmd
+          if: runner.os == 'Windows'
+          run: gclient
+        
+        - shell: bash
+          if: runner.os != 'Windows'
+          run: gclient
