@@ -14,7 +14,7 @@ runs:
           run: |
             $RepositoryUrl = "https://chromium.googlesource.com/chromium/tools/depot_tools.git"
             $WinBundleUrl = "https://storage.googleapis.com/chrome-infra/depot_tools.zip"
-            $InstallLocation = "$Env:GITHUB_WORKSPACE/../depot_tools"
+            $InstallLocation = "~/depot_tools"
 
             New-Item $InstallLocation -ItemType Directory -ea 0
             Set-Location $InstallLocation

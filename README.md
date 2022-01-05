@@ -5,7 +5,7 @@ This action will install Google's Depot Tools to the workflow's PATH, allowing f
 ## Example Usage
 ```yml
 - name: Install Depot Tools
-  uses: newkdev/setup-depot-tools@v1.0.0
+  uses: newkdev/setup-depot-tools@v1.0.1
 ```
 
 ## Home does this work?
