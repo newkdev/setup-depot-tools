@@ -1,6 +1,9 @@
 name: "setup-depot-tools"
 description: "Install Google's Depot Tools into the PATH."
 author: "Newk"
+branding:
+  color: blue
+  icon: arrow-down-circle
 outputs:
     DEPOT_TOOLS_PATH:
         description: "The directory in which Depot Tools are installed."
